@@ -12,7 +12,7 @@ export const metadata = {
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center p-5 md:p-10">
-      <h1 className="text-3xl md:text-5xl font-bold text-center p-5">
+      <h1 className="text-5xl md:text-6xl font-bold text-center p-5">
         Speak, learn, improve.
         <br />
         With AI guiding you.
