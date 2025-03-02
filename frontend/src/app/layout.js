@@ -1,7 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import { Github, Linkedin } from "lucide-react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -63,15 +62,18 @@ function Footer() {
           href="https://github.com/bryan-melo"
           target="_blank"
           rel="noopener noreferrer"
+          className="text-gray-300 hover:text-white transition duration-200"
         >
-          <Github className="h-6 w-6 text-gray-300 hover:text-white transition duration-200" />
+          GitHub
         </a>
+        <a>|</a>
         <a
           href="https://linkedin.com/in/bryan-melo"
           target="_blank"
           rel="noopener noreferrer"
+          className="text-gray-300 hover:text-white transition duration-200"
         >
-          <Linkedin className="h-6 w-6 text-gray-300 hover:text-white transition duration-200" />
+          LinkedIn
         </a>
       </div>
     </footer>
