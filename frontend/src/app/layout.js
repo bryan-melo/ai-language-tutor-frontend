@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import { Github, Linkedin } from "lucide-react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,6 +52,32 @@ function Header() {
   );
 }
 
+function Footer() {
+  return (
+    <footer className="w-full bg-gray-900 text-white p-5 text-center mt-10 border-t border-gray-700">
+      <p className="text-gray-300 text-sm md:text-base">
+        © 2025 AI Powered Language Tutor | Created by Bryan Melo
+      </p>
+      <div className="flex justify-center gap-4 mt-2">
+        <a
+          href="https://github.com/bryan-melo"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Github className="h-6 w-6 text-gray-300 hover:text-white transition duration-200" />
+        </a>
+        <a
+          href="https://linkedin.com/in/bryan-melo"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Linkedin className="h-6 w-6 text-gray-300 hover:text-white transition duration-200" />
+        </a>
+      </div>
+    </footer>
+  );
+}
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -59,6 +86,7 @@ export default function RootLayout({ children }) {
       >
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );
