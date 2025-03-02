@@ -1,7 +1,7 @@
 export default function Page() {
   return (
-    <main className="flex min-h-screen items-center justify-center p-5 md:p-10">
-      <div className="border border-gray-300 p-10 text-center">
+    <main className="flex min-h-screen items-center justify-center p-5 md:p-10 bg-teal-500 dark:bg-teal-700">
+      <div className="border border-gray-300 p-10 text-center bg-white dark:bg-black">
         <h1 className="text-2xl md:text-3xl font-bold text-center p-10">
           Create Account
         </h1>
