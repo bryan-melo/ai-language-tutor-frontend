@@ -32,10 +32,10 @@ export default function Home() {
       </div>
 
       <div className="grid grid-cols-3 gap-4 p-5">
-        <div className="rounded-l-lg bg-gray-400 p-8">
+        <div className="rounded-l-lg bg-gray-400 p-8 duration-200 hover:scale-110">
           <div>
             <h3 className="text-2xl font-bold text-center p-2 text-black dark:text-black flex items-center">
-              <MicrophoneIcon className="h-7 w-7 mr-4 mb-3 text-black dark:text-black" />
+              <MicrophoneIcon className="h-7 w-7 mr-4 text-black dark:text-black" />
               <span>Speak</span>
             </h3>
             <p className="text-black dark:text-black-800">
@@ -45,10 +45,10 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <div className="rounded-b-lg bg-gray-300 p-8">
+        <div className="rounded-b-lg bg-gray-300 p-8 duration-200 hover:scale-110">
           <div>
             <h3 className="text-2xl font-bold text-center p-2 text-black dark:text-black flex items-center">
-              <LightBulbIcon className="h-7 w-7 mr-4 mb-3 text-black dark:text-black" />
+              <LightBulbIcon className="h-7 w-7 mr-4 text-black dark:text-black" />
               <span>Learn</span>
             </h3>
             <p className="text-black dark:text-black-800">
@@ -57,10 +57,10 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <div className="rounded-r-lg bg-gray-400 p-8">
+        <div className="rounded-r-lg bg-gray-400 p-8 duration-200 hover:scale-110">
           <div>
             <h3 className="text-2xl font-bold text-center p-2 text-black dark:text-black flex items-center">
-              <TrendingUpIcon className="h-7 w-7 mr-4 mb-3 text-black dark:text-black" />
+              <TrendingUpIcon className="h-7 w-7 mr-4 text-black dark:text-black" />
               <span>Improve</span>
             </h3>
             <p className="text-black dark:text-black-800">
