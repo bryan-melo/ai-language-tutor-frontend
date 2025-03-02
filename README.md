@@ -21,7 +21,7 @@ To create a new Next.js project, run the following command:
 npx create-next-app@latest
 ```
 
-## Project Setup Inputs
+### Project Setup Inputs
 Below are the prompts you’ll encounter during setup, along with the chosen options for this project:
 
 1.	What is your project named? → frontend
