@@ -22,7 +22,7 @@ function Header() {
       <div className="container mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="text-white text-lg font-semibold">
-          AI Tutor
+          AI Language Tutor
         </Link>
 
         {/* Desktop Nav */}

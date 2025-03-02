@@ -36,9 +36,8 @@ export default function Home() {
         />
       </div>
 
-      {/* Adjusting grid layout for mobile */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-5">
-        <div className="rounded-lg sm:rounded-l-lg border border-gray-300 shadow-md p-6 md:p-8 bg-gray-100 dark:bg-gray-300 duration-200 hover:scale-110">
+        <div className="rounded-lg sm:rounded-l-lg border border-gray-300 shadow-md p-6 md:p-8 bg-gray-100 dark:bg-gray-200 duration-200 hover:scale-110">
           <h3 className="text-xl md:text-2xl font-bold text-center p-2 text-black dark:text-black flex items-center">
             <MicrophoneIcon className="h-6 md:h-7 w-6 md:w-7 mr-2 md:mr-4 text-blue-500 drop-shadow-md" />
             <span>Speak</span>
@@ -50,7 +49,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="border border-gray-300 shadow-md p-6 md:p-8 bg-gray-200 dark:bg-gray-200 duration-200 hover:scale-110">
+        <div className="border border-gray-300 shadow-md p-6 md:p-8 bg-gray-100 dark:bg-gray-200 duration-200 hover:scale-110">
           <h3 className="text-xl md:text-2xl font-bold text-center p-2 text-black dark:text-black flex items-center">
             <LightBulbIcon className="h-6 md:h-7 w-6 md:w-7 mr-2 md:mr-4 text-yellow-500 drop-shadow-md" />
             <span>Learn</span>
@@ -61,7 +60,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="rounded-lg sm:rounded-r-lg border border-gray-300 shadow-md p-6 md:p-8 bg-gray-300 dark:bg-gray-100 duration-200 hover:scale-110">
+        <div className="rounded-lg sm:rounded-r-lg border border-gray-300 shadow-md p-6 md:p-8 bg-gray-100 dark:bg-gray-200 duration-200 hover:scale-110">
           <h3 className="text-xl md:text-2xl font-bold text-center p-2 text-black dark:text-black flex items-center">
             <TrendingUpIcon className="h-6 md:h-7 w-6 md:w-7 mr-2 md:mr-4 text-green-500 drop-shadow-md" />
             <span>Improve</span>
