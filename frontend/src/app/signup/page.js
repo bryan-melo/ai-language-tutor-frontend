@@ -1,6 +1,6 @@
 export default function Page() {
   return (
-    <main className="flex min-h-screen items-center justify-center p-5 md:p-10 bg-teal-500 dark:bg-teal-700">
+    <main className="flex min-h-screen items-center justify-center p-5 md:p-10 bg-gradient-to-br from-teal-500 to-teal-700 dark:from-teal-700 dark:to-teal-900">
       <div className="border border-gray-300 p-10 text-center bg-white dark:bg-black">
         <h1 className="text-2xl md:text-3xl font-bold text-center p-10">
           Create Account
@@ -98,7 +98,7 @@ export default function Page() {
               required
             />
           </div>
-          <div>
+          <div className="mb-2">
             <label
               htmlFor="primary_language"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -117,12 +117,21 @@ export default function Page() {
               <option value="Chinese">Chinese</option>
             </select>
           </div>
-          <button
-            type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-5"
-          >
-            Submit
-          </button>
+          <div className="flex items-center justify-between mb-2">
+            <a
+              href="/login"
+              className="text-blue-600 text-sm hover:underline dark:text-blue-400 max-w-[10rem] break-words pt-5"
+              tabIndex="0"
+            >
+              Have an account? Login
+            </a>
+            <button
+              type="submit"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-5"
+            >
+              Submit
+            </button>
+          </div>
         </form>
       </div>
     </main>

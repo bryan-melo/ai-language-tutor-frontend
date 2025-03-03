@@ -115,7 +115,7 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="w-full bg-gray-900 text-white p-5 text-center mt-10 border-t border-gray-700">
+    <footer className="w-full bg-gray-900 text-white p-5 text-center  border-t border-gray-700">
       <p className="text-gray-300 text-xs sm:text-sm md:text-base">
         © 2025 AI Powered Language Tutor | Created by Bryan Melo
       </p>
