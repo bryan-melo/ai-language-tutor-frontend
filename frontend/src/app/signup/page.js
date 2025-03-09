@@ -1,6 +1,8 @@
 export default function Page() {
   async function submitForm(formData) {
     "use server";
+
+    // User input to create an account
     const formFields = {
       f_name: formData.get("first_name"),
       l_name: formData.get("last_name"),
@@ -10,6 +12,7 @@ export default function Page() {
       primary_lang: formData.get("primary_language"),
     };
 
+    // API Call to create an account
     try {
       const response = await fetch(
         "https://ai-language-tutor-backend.onrender.com/account/",
@@ -36,6 +39,7 @@ export default function Page() {
     }
   }
 
+  // Create account UI
   return (
     <main className="flex min-h-screen items-center justify-center p-5 md:p-10 bg-gradient-to-br from-teal-500 to-teal-700 dark:from-teal-700 dark:to-teal-900">
       <div className="border border-gray-300 p-10 text-center bg-white dark:bg-black">
