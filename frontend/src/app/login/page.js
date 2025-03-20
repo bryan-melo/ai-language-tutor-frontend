@@ -1,11 +1,48 @@
 export default function Page() {
+  async function submitForm(formData) {
+    "use server";
+
+    // User input to login
+    const formFields = {
+      username: formData.get("username"),
+      password: formData.get("password")
+    };
+
+    // API Call to validate login credentials
+    try {
+      const response = await fetch(
+        "https://ai-language-tutor-backend.onrender.com/account/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", 
+          },
+          body: JSON.stringify(formFields),
+        }
+      );
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(responseData.detail || "Failed to send data");
+      }
+
+      console.log("Response from API:", responseData);
+      return responseData;
+    } catch (error) {
+      console.log("Error", error);
+      return { error: error.message };
+    }
+    
+  }
+
   return (
     <main className="flex min-h-screen items-center justify-center p-5 md:p-10 bg-gradient-to-br from-teal-500 to-teal-700 dark:from-teal-700 dark:to-teal-900">
       <div className="border border-gray-300 p-10 text-center bg-white dark:bg-gray-900 rounded-lg shadow-lg w-[22rem] md:w-[24rem]">
         <h1 className="text-2xl md:text-3xl font-bold text-center p-5">
           Login
         </h1>
-        <form className="text-left">
+        <form className="text-left" action={submitForm}>
           <div className="mb-6">
             <label
               htmlFor="username"
@@ -16,6 +53,7 @@ export default function Page() {
             <input
               type="text"
               id="username"
+              name="username"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="john1234"
               required
@@ -31,6 +69,7 @@ export default function Page() {
             <input
               type="password"
               id="password"
+              name="password"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="•••••••••"
               required
