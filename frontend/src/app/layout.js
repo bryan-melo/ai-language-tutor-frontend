@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false); // Placeholder for authentication state
 
   return (
     <header className="bg-slate-500 py-4">
@@ -33,9 +34,6 @@ function Header() {
           <Link href="/courses" className="text-white hover:underline">
             Courses
           </Link>
-          <Link href="/timeline" className="text-white hover:underline">
-            Timeline
-          </Link>
           <Link href="/about" className="text-white hover:underline">
             About
           </Link>
@@ -43,12 +41,23 @@ function Header() {
 
         {/* Desktop Right-aligned Nav */}
         <nav className="hidden md:flex space-x-6">
-          <Link href="/login" className="text-white hover:underline">
-            Login
-          </Link>
-          <Link href="/signup" className="text-white hover:underline">
-            Create Account
-          </Link>
+          {loggedIn ? (
+            <button
+              onClick={() => setLoggedIn(false)}
+              className="text-white hover:underline"
+            >
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link href="/login" className="text-white hover:underline">
+                Login
+              </Link>
+              <Link href="/signup" className="text-white hover:underline">
+                Create Account
+              </Link>
+            </>
+          )}
         </nav>
 
         {/* Mobile Menu Button */}
@@ -79,33 +88,41 @@ function Header() {
               Courses
             </Link>
             <Link
-              href="/timeline"
-              className="hover:underline"
-              onClick={() => setMenuOpen(false)}
-            >
-              Timeline
-            </Link>
-            <Link
               href="/about"
               className="hover:underline"
               onClick={() => setMenuOpen(false)}
             >
               About
             </Link>
-            <Link
-              href="/login"
-              className="hover:underline"
-              onClick={() => setMenuOpen(false)}
-            >
-              Login
-            </Link>
-            <Link
-              href="/signup"
-              className="hover:underline"
-              onClick={() => setMenuOpen(false)}
-            >
-              Create Account
-            </Link>
+            
+            {loggedIn ? (
+              <button
+                onClick={() => {
+                  setLoggedIn(false);
+                  setMenuOpen(false);
+                }}
+                className="hover:underline"
+              >
+                Logout
+              </button>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="hover:underline"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/signup"
+                  className="hover:underline"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Create Account
+                </Link>
+              </>
+            )}
           </nav>
         </div>
       )}

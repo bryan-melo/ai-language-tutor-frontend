@@ -5,7 +5,7 @@ export default function Page() {
     // User input to login
     const formFields = {
       username: formData.get("username"),
-      password: formData.get("password")
+      password: formData.get("password"),
     };
 
     // API Call to validate login credentials
@@ -15,25 +15,27 @@ export default function Page() {
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json", 
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(formFields),
         }
       );
 
       const responseData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(responseData.detail || "Failed to send data");
-      }
-
       console.log("Response from API:", responseData);
+
+      if (Array.isArray(responseData)) {
+        const errorMessages = responseData
+          .map((err) => err.detail || "Unknown error")
+          .join(", ");
+        throw new Error(errorMessages);
+      }
+      
       return responseData;
     } catch (error) {
       console.log("Error", error);
       return { error: error.message };
     }
-    
   }
 
   return (
