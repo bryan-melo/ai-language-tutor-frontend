@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 export default function Page() {
   async function submitForm(formData) {
     "use server";
@@ -15,25 +17,29 @@ export default function Page() {
     // API Call to create an account
     try {
       const response = await fetch(
-        "https://ai-language-tutor-backend.onrender.com/account/",
+        "https://ai-language-tutor-backend.onrender.com/account/create/create-account",
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json", 
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(formFields),
         }
       );
 
-      const responseData = await response.json(); 
+      const responseData = await response.json();
 
       if (!response.ok) {
         throw new Error(responseData.detail || "Failed to send data");
       }
 
       console.log("Response from API:", responseData);
-      return responseData;
+
+      redirect("/login"); // Redirect to login page on success
     } catch (error) {
+      if (error.digest?.startsWith("NEXT_REDIRECT")) {
+        throw error;
+      }
       console.error("Error:", error);
       return { error: error.message };
     }

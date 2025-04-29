@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 export default function Page() {
   async function submitForm(formData) {
     "use server";
@@ -22,7 +24,6 @@ export default function Page() {
       );
 
       const responseData = await response.json();
-      console.log("Response from API:", responseData);
 
       if (Array.isArray(responseData)) {
         const errorMessages = responseData
@@ -31,9 +32,12 @@ export default function Page() {
         throw new Error(errorMessages);
       }
       
-      return responseData;
+      redirect("/"); // Redirect to home page on successful login
     } catch (error) {
-      console.log("Error", error);
+      if (error.digest?.startsWith("NEXT_REDIRECT")) {
+        throw error;
+      }
+      console.error("Error:", error);
       return { error: error.message };
     }
   }
