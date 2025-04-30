@@ -20,19 +20,18 @@ export default function Page() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formFields),
+          credentials: "include", // Include cookies in the request
         }
       );
 
       const responseData = await response.json();
 
-      if (Array.isArray(responseData)) {
-        const errorMessages = responseData
-          .map((err) => err.detail || "Unknown error")
-          .join(", ");
-        throw new Error(errorMessages);
+      if (!response.ok) {
+        throw new Error(responseData.detail || "Failed to login");
       }
+      console.log("Response from API:", responseData);
       
-      redirect("/"); // Redirect to home page on successful login
+      redirect("/courses"); // Redirect to courses page on successful login
     } catch (error) {
       if (error.digest?.startsWith("NEXT_REDIRECT")) {
         throw error;
