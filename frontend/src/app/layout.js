@@ -18,6 +18,7 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false); // Placeholder for authentication state
 
+  // Add state change handler for login/logout
   return (
     <header className="bg-slate-500 py-4">
       <div className="container mx-auto px-4 flex justify-between items-center">
