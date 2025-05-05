@@ -1,43 +1,34 @@
-import { redirect } from "next/navigation";
+"use client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Page() {
-  async function submitForm(formData) {
-    "use server";
-
-    // User input to login
-    const formFields = {
-      username: formData.get("username"),
-      password: formData.get("password"),
-    };
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+  
+  async function submitForm(e) {
+    
+    e.preventDefault();
 
     // API Call to validate login credentials
-    try {
-      const response = await fetch(
-        "https://ai-language-tutor-backend.onrender.com/account/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formFields),
-          credentials: "include", // Include cookies in the request
-        }
-      );
+    const response = await fetch(
+      "https://ai-language-tutor-backend.onrender.com/account/login",
+      {
+        method: "POST",
+        credentials: "include", // Include cookies in the request
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password })
+      });
 
-      const responseData = await response.json();
+    const responseData = await response.json();
 
-      if (!response.ok) {
-        throw new Error(responseData.detail || "Failed to login");
-      }
-      console.log("Response from API:", responseData);
-      
-      redirect("/courses"); // Redirect to courses page on successful login
-    } catch (error) {
-      if (error.digest?.startsWith("NEXT_REDIRECT")) {
-        throw error;
-      }
-      console.error("Error:", error);
-      return { error: error.message };
+    if (!response.ok) {
+      alert(responseData.detail || "Failed to login");
+    } else {
+      router.push("/courses"); // Redirect to courses page on successful login  
     }
   }
 
@@ -47,7 +38,7 @@ export default function Page() {
         <h1 className="text-2xl md:text-3xl font-bold text-center p-5">
           Login
         </h1>
-        <form className="text-left" action={submitForm}>
+        <form className="text-left" onSubmit={submitForm}>
           <div className="mb-6">
             <label
               htmlFor="username"
@@ -57,10 +48,10 @@ export default function Page() {
             </label>
             <input
               type="text"
-              id="username"
-              name="username"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="john1234"
               required
             />
           </div>
@@ -73,10 +64,10 @@ export default function Page() {
             </label>
             <input
               type="password"
-              id="password"
-              name="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="•••••••••"
               required
             />
           </div>
