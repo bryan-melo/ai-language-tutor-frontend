@@ -1,6 +1,7 @@
 "use client";
 import { Geist, Geist_Mono } from "next/font/google";
 import { useEffect, useState } from "react";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 import "./globals.css";
 import Link from "next/link";
 
@@ -16,29 +17,14 @@ const geistMono = Geist_Mono({
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false); // Placeholder for authentication state
+  const { isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     async function checkLoginStatus() {
-      try {
-        const res = await fetch("https://ai-language-tutor-backend.onrender.com/account/auth/check", {
-          credentials: "include",
-        });
-        if (!res.ok) throw new Error("Not authenticated");
-        setLoggedIn(true);
-      } catch {
-        setLoggedIn(false);
-      }
+      
     }
-
     checkLoginStatus();
   }, []);
-
-  const handleLogout = async () => {
-    // Optional: Hit a logout endpoint to clear cookie if needed
-    document.cookie = "auth_token=; Max-Age=0"; // Clear cookie manually
-    setLoggedIn(false);
-  };
 
   // Add state change handler for login/logout
   return (
@@ -57,8 +43,8 @@ function Header() {
 
         {/* Right-Aligned Auth Links */}
         <nav className="hidden md:flex space-x-6">
-          {loggedIn ? (
-            <button onClick={handleLogout} className="text-white hover:underline">
+          {isAuthenticated ? (
+            <button onClick={logout} className="text-white hover:underline">
               Logout
             </button>
           ) : (
@@ -86,10 +72,10 @@ function Header() {
             <Link href="/courses" className="hover:underline" onClick={() => setMenuOpen(false)}>Courses</Link>
             <Link href="/about" className="hover:underline" onClick={() => setMenuOpen(false)}>About</Link>
 
-            {loggedIn ? (
+            {isAuthenticated ? (
               <button
                 onClick={() => {
-                  handleLogout();
+                  logout();
                   setMenuOpen(false);
                 }}
                 className="hover:underline"
@@ -141,12 +127,12 @@ function Footer() {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Header />
-        {children}
-        <Footer />
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <AuthProvider>
+          <Header />
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

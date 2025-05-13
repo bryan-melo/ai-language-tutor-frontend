@@ -1,8 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Page() {
+  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
@@ -28,6 +30,7 @@ export default function Page() {
     if (!response.ok) {
       alert(responseData.detail || "Failed to login");
     } else {
+      login();
       router.push("/"); 
     }
   }
