@@ -1,10 +1,3 @@
-/*
-async function getData() {
-  const res = await fetch("https://ai-language-tutor-backend.onrender.com/");
-  return res.json();
-}
-*/
-
 export default async function Page() {
   // const data = await getData();
   return (

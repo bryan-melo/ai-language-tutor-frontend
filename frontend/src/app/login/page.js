@@ -28,7 +28,7 @@ export default function Page() {
     if (!response.ok) {
       alert(responseData.detail || "Failed to login");
     } else {
-      router.push("/courses"); // Redirect to courses page on successful login  
+      router.push("/"); 
     }
   }
 
