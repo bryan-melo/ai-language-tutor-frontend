@@ -32,7 +32,10 @@ function Header() {
           <Link href="/" className="text-white hover:underline">
             Home
           </Link>
-          <Link href="/courses" className="text-white hover:underline">
+          <Link
+            href={isAuthenticated ? "/courses" : "/login"}
+            className="text-white hover:underline"
+          >
             Courses
           </Link>
           <Link href="/about" className="text-white hover:underline">
