@@ -1,10 +1,8 @@
 "use client";
 
 import { Geist, Geist_Mono } from "next/font/google";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-
-import Link from "next/link";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 // Initialize the Geist and Geist_Mono fonts
@@ -18,174 +16,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
-  const router = useRouter();
-
-  // Check authentication status on page load
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    console.log("User from localStorage:", user);
-    if (user) {
-      setIsAuthenticated(true);
-    }
-  }, []);
-
-  if (isAuthenticated === null) {
-    return null;
-  }
-
-  // Logout function
-  const logout = () => {
-    localStorage.removeItem("user");
-    setIsAuthenticated(false);
-    router.push("/login");
-  };
-
-  return (
-    <header className="bg-slate-500 py-4">
-      <div className="container mx-auto px-4 flex justify-between items-center">
-        <Link href="/" className="text-white text-lg font-semibold">
-          AI Language Tutor
-        </Link>
-
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex space-x-6">
-          <Link href="/" className="text-white hover:underline">
-            Home
-          </Link>
-          <Link href="/courses" className="text-white hover:underline">
-            Courses
-          </Link>
-          <Link href="/about" className="text-white hover:underline">
-            About
-          </Link>
-        </nav>
-
-        {/* Right-Aligned Auth Links */}
-        <nav className="hidden md:flex space-x-6">
-          {isAuthenticated ? (
-            <button onClick={logout} className="text-white hover:underline">
-              Logout
-            </button>
-          ) : (
-            <>
-              <Link href="/login" className="text-white hover:underline">
-                Login
-              </Link>
-              <Link href="/signup" className="text-white hover:underline">
-                Create Account
-              </Link>
-            </>
-          )}
-        </nav>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden text-white focus:outline-none"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          ☰
-        </button>
-      </div>
-
-      {/* Mobile Dropdown */}
-      {menuOpen && (
-        <div className="md:hidden bg-slate-600 text-white py-4">
-          <nav className="flex flex-col space-y-4 text-center">
-            <Link
-              href="/"
-              className="hover:underline"
-              onClick={() => setMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link
-              href="/courses"
-              className="hover:underline"
-              onClick={() => setMenuOpen(false)}
-            >
-              Courses
-            </Link>
-            <Link
-              href="/about"
-              className="hover:underline"
-              onClick={() => setMenuOpen(false)}
-            >
-              About
-            </Link>
-
-            {isAuthenticated ? (
-              <button
-                onClick={() => {
-                  logout();
-                  setMenuOpen(false);
-                }}
-                className="hover:underline"
-              >
-                Logout
-              </button>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="hover:underline"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/signup"
-                  className="hover:underline"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Create Account
-                </Link>
-              </>
-            )}
-          </nav>
-        </div>
-      )}
-    </header>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="w-full bg-gray-900 text-white p-5 text-center  border-t border-gray-700">
-      <p className="text-gray-300 text-xs sm:text-sm md:text-base">
-        © 2025 AI Powered Language Tutor | Created by Bryan Melo
-      </p>
-      <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mt-2">
-        <a
-          href="https://github.com/bryan-melo"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-gray-300 hover:text-white transition duration-200"
-        >
-          GitHub
-        </a>
-        <span className="hidden sm:inline text-gray-500">|</span>
-        <a
-          href="https://linkedin.com/in/bryan-melo"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-gray-300 hover:text-white transition duration-200"
-        >
-          LinkedIn
-        </a>
-      </div>
-    </footer>
-  );
-}
-
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className="antialiased">
         <Header />
         {children}
         <Footer />

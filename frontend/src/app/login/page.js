@@ -1,6 +1,6 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [username, setUsername] = useState("");
@@ -18,9 +18,7 @@ export default function Page() {
         "https://ai-language-tutor-backend.onrender.com/account/login",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ username, password }),
         }
       );
@@ -31,11 +29,12 @@ export default function Page() {
         alert(responseData.detail || "Failed to login");
       } else {
         localStorage.setItem("user", JSON.stringify(responseData));
+        window.location.reload();
         window.location.href = "/";
       }
     } catch (err) {
       console.error("Login error:", err);
-      alert("Something went wrong during login. Check console.");
+      alert("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -56,6 +55,7 @@ export default function Page() {
               Username
             </label>
             <input
+              id="username"
               type="text"
               placeholder="Username"
               value={username}
@@ -72,6 +72,7 @@ export default function Page() {
               Password
             </label>
             <input
+              id="password"
               type="password"
               placeholder="Password"
               value={password}
