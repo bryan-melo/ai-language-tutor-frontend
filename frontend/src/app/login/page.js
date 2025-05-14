@@ -1,37 +1,43 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useAuth } from "@/context/AuthContext";
 
 export default function Page() {
-  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  
+
   async function submitForm(e) {
-    
     e.preventDefault();
+    if (loading) return;
 
-    // API Call to validate login credentials
-    const response = await fetch(
-      "https://ai-language-tutor-backend.onrender.com/account/login",
-      {
-        method: "POST",
-        credentials: "include", // Include cookies in the request
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password })
-      });
+    setLoading(true);
+    try {
+      const response = await fetch(
+        "https://ai-language-tutor-backend.onrender.com/account/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
-    const responseData = await response.json();
+      const responseData = await response.json();
 
-    if (!response.ok) {
-      alert(responseData.detail || "Failed to login");
-    } else {
-      login();
-      router.push("/"); 
+      if (!response.ok) {
+        alert(responseData.detail || "Failed to login");
+      } else {
+        localStorage.setItem("user", JSON.stringify(responseData));
+        window.location.href = "/";
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      alert("Something went wrong during login. Check console.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -84,9 +90,10 @@ export default function Page() {
             </a>
             <button
               type="submit"
+              disabled={loading}
               className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              Submit
+              {loading ? "Logging in..." : "Submit"}
             </button>
           </div>
         </form>

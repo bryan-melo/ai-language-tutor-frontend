@@ -1,10 +1,13 @@
 "use client";
+
 import { Geist, Geist_Mono } from "next/font/google";
 import { useEffect, useState } from "react";
-import { AuthProvider, useAuth } from "@/context/AuthContext";
-import "./globals.css";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
+import Link from "next/link";
+import "./globals.css";
+
+// Initialize the Geist and Geist_Mono fonts
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -17,16 +20,29 @@ const geistMono = Geist_Mono({
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { isAuthenticated, logout } = useAuth();
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const router = useRouter();
 
+  // Check authentication status on page load
   useEffect(() => {
-    async function checkLoginStatus() {
-      
+    const user = localStorage.getItem("user");
+    console.log("User from localStorage:", user);
+    if (user) {
+      setIsAuthenticated(true);
     }
-    checkLoginStatus();
   }, []);
 
-  // Add state change handler for login/logout
+  if (isAuthenticated === null) {
+    return null;
+  }
+
+  // Logout function
+  const logout = () => {
+    localStorage.removeItem("user");
+    setIsAuthenticated(false);
+    router.push("/login");
+  };
+
   return (
     <header className="bg-slate-500 py-4">
       <div className="container mx-auto px-4 flex justify-between items-center">
@@ -36,9 +52,15 @@ function Header() {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex space-x-6">
-          <Link href="/" className="text-white hover:underline">Home</Link>
-          <Link href="/courses" className="text-white hover:underline">Courses</Link>
-          <Link href="/about" className="text-white hover:underline">About</Link>
+          <Link href="/" className="text-white hover:underline">
+            Home
+          </Link>
+          <Link href="/courses" className="text-white hover:underline">
+            Courses
+          </Link>
+          <Link href="/about" className="text-white hover:underline">
+            About
+          </Link>
         </nav>
 
         {/* Right-Aligned Auth Links */}
@@ -49,8 +71,12 @@ function Header() {
             </button>
           ) : (
             <>
-              <Link href="/login" className="text-white hover:underline">Login</Link>
-              <Link href="/signup" className="text-white hover:underline">Create Account</Link>
+              <Link href="/login" className="text-white hover:underline">
+                Login
+              </Link>
+              <Link href="/signup" className="text-white hover:underline">
+                Create Account
+              </Link>
             </>
           )}
         </nav>
@@ -68,9 +94,27 @@ function Header() {
       {menuOpen && (
         <div className="md:hidden bg-slate-600 text-white py-4">
           <nav className="flex flex-col space-y-4 text-center">
-            <Link href="/" className="hover:underline" onClick={() => setMenuOpen(false)}>Home</Link>
-            <Link href="/courses" className="hover:underline" onClick={() => setMenuOpen(false)}>Courses</Link>
-            <Link href="/about" className="hover:underline" onClick={() => setMenuOpen(false)}>About</Link>
+            <Link
+              href="/"
+              className="hover:underline"
+              onClick={() => setMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link
+              href="/courses"
+              className="hover:underline"
+              onClick={() => setMenuOpen(false)}
+            >
+              Courses
+            </Link>
+            <Link
+              href="/about"
+              className="hover:underline"
+              onClick={() => setMenuOpen(false)}
+            >
+              About
+            </Link>
 
             {isAuthenticated ? (
               <button
@@ -84,8 +128,20 @@ function Header() {
               </button>
             ) : (
               <>
-                <Link href="/login" className="hover:underline" onClick={() => setMenuOpen(false)}>Login</Link>
-                <Link href="/signup" className="hover:underline" onClick={() => setMenuOpen(false)}>Create Account</Link>
+                <Link
+                  href="/login"
+                  className="hover:underline"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/signup"
+                  className="hover:underline"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Create Account
+                </Link>
               </>
             )}
           </nav>
@@ -127,12 +183,12 @@ function Footer() {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <AuthProvider>
-          <Header />
-          {children}
-          <Footer />
-        </AuthProvider>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <Header />
+        {children}
+        <Footer />
       </body>
     </html>
   );
