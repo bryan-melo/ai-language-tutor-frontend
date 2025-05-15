@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Mic, Send } from "lucide-react";
 
-export default function PracticeItem({ text }) {
+export default function PracticeItem({ text, lessonType = "grammar" }) {
   const [showChat, setShowChat] = useState(false);
   const [userInput, setUserInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [chatMessages, setChatMessages] = useState([
     { text: `Please say: "${text}"`, sender: "app" },
   ]);
@@ -12,23 +13,75 @@ export default function PracticeItem({ text }) {
     setUserInput(e.target.value);
   };
 
-  const handleSendMessage = () => {
+  // Dynamic role prompt based on lessonType
+  const getRolePrompt = () => {
+    switch (lessonType) {
+      case "pronunciation":
+        return `You are a helpful language tutor focused on pronunciation. Evaluate the user's pronunciation attempt of the phrase: "${text}". Give constructive feedback using text only.`;
+      case "vocabulary":
+        return `You are a friendly language tutor. Help the user improve vocabulary and usage related to the phrase: "${text}". Provide explanations and examples.`;
+      case "grammar":
+      default:
+        return `You are a friendly language tutor. Help the user improve their grammar and vocabulary. The user is practicing the phrase: "${text}". Give helpful corrections and encouragement.`;
+    }
+  };
+
+  const handleSendMessage = async () => {
     if (userInput.trim() === "") return;
-    // Add user message to chat
+
+    const message = userInput;
+
     setChatMessages((prevMessages) => [
       ...prevMessages,
-      { text: userInput, sender: "user" },
+      { text: message, sender: "user" },
     ]);
+    setUserInput("");
+    setIsLoading(true);
 
-   // Simulate sending the message to the server and getting a response
-    setTimeout(() => {
-      const feedbackMessage = `Your pronunciation of "${text}" was good, but try focusing more on the 'i' sound.`;
+    try {
+      const res = await fetch(
+        "https://ai-language-tutor-backend.onrender.com/openai/chat",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            role_prompt: getRolePrompt(),
+            user_input: message,
+            prompt_text: text,
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Backend error:", errorText);
+        setChatMessages((prevMessages) => [
+          ...prevMessages,
+          { text: "Server error: " + errorText, sender: "app" },
+        ]);
+        return;
+      }
+
+      const data = await res.json();
+
       setChatMessages((prevMessages) => [
         ...prevMessages,
-        { text: feedbackMessage, sender: "app" },
+        { text: data.response || "No response from server", sender: "app" },
       ]);
-      setUserInput("");
-    }, 1000); // Simulate response delay
+    } catch (error) {
+      console.error("Error fetching from OpenAI:", error);
+      setChatMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          text: "Sorry, something went wrong while contacting the server.",
+          sender: "app",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const SpeechRecognition =
@@ -38,7 +91,7 @@ export default function PracticeItem({ text }) {
 
   if (recognition) {
     recognition.continuous = false;
-    recognition.lang = "en-US"; 
+    recognition.lang = "en-US";
     recognition.interimResults = false;
   }
 
@@ -53,6 +106,10 @@ export default function PracticeItem({ text }) {
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
       setUserInput(transcript);
+      // Optional: Auto-send after short delay
+      setTimeout(() => {
+        handleSendMessage();
+      }, 500);
     };
 
     recognition.onerror = (event) => {
@@ -84,7 +141,7 @@ export default function PracticeItem({ text }) {
             </button>
 
             <div className="flex-1 overflow-auto mt-5 p-8">
-              <div className="space-y-4">
+              <div className="space-y-4 flex flex-col">
                 {chatMessages.map((message, index) => (
                   <div
                     key={index}
@@ -97,6 +154,12 @@ export default function PracticeItem({ text }) {
                     <p>{message.text}</p>
                   </div>
                 ))}
+
+                {isLoading && (
+                  <div className="p-3 rounded-lg bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-300 self-start max-w-xs">
+                    <p>Loading...</p>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -117,6 +180,12 @@ export default function PracticeItem({ text }) {
                   <button
                     className="p-2 rounded-md bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-400 dark:hover:bg-gray-500"
                     onClick={handleMicClick}
+                    disabled={!recognition}
+                    title={
+                      recognition
+                        ? "Click to speak"
+                        : "Speech recognition not supported"
+                    }
                   >
                     <Mic className="w-5 h-5" />
                   </button>
