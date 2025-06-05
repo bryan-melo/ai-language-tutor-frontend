@@ -2,7 +2,7 @@
  
 #### Website URL: https://ai-language-tutor-frontend-sable.vercel.app/
 
----
+--- 
 
 This document serves as a reference guide for working with **Next.js** in this project. It includes setup instructions and key concepts, such as components, routing, and data fetching.
 
